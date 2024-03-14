@@ -1,0 +1,17 @@
+{
+    "name": "ZiplineValley.Views",
+    "rootNamespace": "",
+    "references": [
+        "GUID:43ebdc8fce623904fb3f00a39078fb48",
+        "GUID:9a16f3da50c8bd54e994902483d99bc1"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
