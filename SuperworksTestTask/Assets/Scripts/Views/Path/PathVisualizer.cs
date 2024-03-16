@@ -11,6 +11,8 @@ namespace ZiplineValley.Views.Path
     {
         [SerializeField]
         private LineRenderer _lineRenderer;
+        [SerializeField]
+        private Transform _lineEnding;
 
         public void Draw(PathModel path)
         {
@@ -30,6 +32,9 @@ namespace ZiplineValley.Views.Path
 
                     _lineRenderer.positionCount = positions.Count;
                     _lineRenderer.SetPositions(positions.ToArray());
+
+                    _lineEnding.gameObject.SetActive(true);
+                    _lineEnding.transform.position = path.PathEndPosition;
                 }
             }
             catch (Exception ex) { Debug.LogException(ex); }
@@ -39,6 +44,7 @@ namespace ZiplineValley.Views.Path
         {
             _lineRenderer.positionCount = 0;
             _lineRenderer.SetPositions(new Vector3[] { });
+            _lineEnding.gameObject.SetActive(false);
         }
     }
 }

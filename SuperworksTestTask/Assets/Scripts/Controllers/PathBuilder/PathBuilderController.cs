@@ -61,6 +61,10 @@ namespace ZiplineValley.Controllers.PathBuilder
                         currentPath.CollisionPoints.AddRange(
                             GetBypassingPoints(obstacleModel, lastPoint, _targetPoint.position, collisionHitPosition));
                     }
+                    else
+                    {
+                        currentPath.PathEndPosition = collisionHitPosition;
+                    }
                 }
                 else
                 {
