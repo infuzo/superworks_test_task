@@ -16,7 +16,7 @@ namespace ZiplineValley.Models.Obstacles
         private void CalculatePoints()
         {
             points = new List<PointReferenceModel>();
-            var radius = (transform.lossyScale.x / 2f) + 0.05f;
+            var radius = GetRadius();
 
             var angle = 0f;
             while (angle < 360f)
@@ -27,6 +27,16 @@ namespace ZiplineValley.Models.Obstacles
 
                 angle += _stepAngle;
             }
+        }
+
+        private float GetRadius()
+        {
+            return (transform.lossyScale.x / 2f) + 0.05f; 
+        }
+
+        public override bool IsPointInsideObstacle(Vector2 position)
+        {
+            return Vector2.Distance(transform.position, position) <= GetRadius();
         }
     }
 }

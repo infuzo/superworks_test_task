@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -22,18 +21,30 @@ namespace ZiplineValley.Controllers.PathBuilder
 
         private Vector3? lastFirstPointPosition, lastTargetPointPosition;
 
+        private void Start()
+        {
+            currentPath.PathStartPosition = _firstPoint.position;
+        }
+
         private void Update()
         {
             if (WerePointsChanged())
             {
-                currentPath.Points.Clear();
-                currentPath.Points.Add(_firstPoint.position);
+                currentPath.PathStartPosition = _firstPoint.position;
+                currentPath.PathEndPosition = _targetPoint.position;
 
                 var collisionHitPosition = Vector2.zero;
                 ObstacleModel obstacleModel = null;
 
-                var direction = (Vector2)(_targetPoint.position - _firstPoint.position).normalized;
-                var raycast2DHit = Physics2D.Raycast(_firstPoint.position, direction);
+                var lastPoint = currentPath.PathStartPosition;
+                if (currentPath.CollisionPoints.Count > 0)
+                {
+                    lastPoint = currentPath.CollisionPoints[^1];
+                }
+
+                var direction = ((Vector2)_targetPoint.position - lastPoint).normalized;
+                var raycast2DHit = Physics2D.Raycast(lastPoint, direction, 
+                    Vector2.Distance(_targetPoint.position, lastPoint) + 0.1f);
 
                 if (raycast2DHit.collider != null)
                 {
@@ -43,9 +54,12 @@ namespace ZiplineValley.Controllers.PathBuilder
 
                 if (obstacleModel != null)
                 {
-                    currentPath.Points.AddRange(GetBypassingPath(obstacleModel, _firstPoint.position, _targetPoint.position, collisionHitPosition));
+                    if (!obstacleModel.IsPointInsideObstacle(_targetPoint.position))
+                    {
+                        currentPath.CollisionPoints.AddRange(
+                            GetBypassingPath(obstacleModel, lastPoint, _targetPoint.position, collisionHitPosition));
+                    }
                 }
-                currentPath.Points.Add(_targetPoint.position);
 
                 _visualizer.Draw(currentPath);
             }
@@ -142,14 +156,6 @@ namespace ZiplineValley.Controllers.PathBuilder
                     .FirstOrDefault();
             }
         }
-
-        private Vector2 RotateVector2(Vector2 vector, float degrees)
-        {
-            var rotation = Quaternion.AngleAxis(degrees, Vector3.forward);
-            return rotation * vector;
-        }
-
-
 
         private bool WerePointsChanged()
         {

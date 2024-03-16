@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace ZiplineValley.Models.Obstacles
@@ -10,5 +8,10 @@ namespace ZiplineValley.Models.Obstacles
         protected List<PointReferenceModel> points;
 
         public virtual IReadOnlyList<PointReferenceModel> Points => points;
+
+        public virtual bool IsPointInsideObstacle(Vector2 position)
+        {
+            return false;
+        }
     }
 }

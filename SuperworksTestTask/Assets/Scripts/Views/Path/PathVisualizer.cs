@@ -1,4 +1,6 @@
+using Codice.Client.Common;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using ZiplineValley.Models.Path;
@@ -20,10 +22,14 @@ namespace ZiplineValley.Views.Path
                 }
                 else
                 {
-                    _lineRenderer.positionCount = path.Points.Count;
-                    _lineRenderer.SetPositions(path.Points
-                        .Select(p => new Vector3(p.x, p.y, 0f))
-                        .ToArray());
+                    var positions = new List<Vector3>();
+                    positions.Add(path.PathStartPosition);
+                    positions.AddRange(path.CollisionPoints
+                        .Select(p => new Vector3(p.x, p.y, 0f)));
+                    positions.Add(path.PathEndPosition);
+
+                    _lineRenderer.positionCount = positions.Count;
+                    _lineRenderer.SetPositions(positions.ToArray());
                 }
             }
             catch (Exception ex) { Debug.LogException(ex); }
