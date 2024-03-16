@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using ZiplineValley.Models;
 using ZiplineValley.Models.Obstacles;
 using ZiplineValley.Models.Path;
 using ZiplineValley.Views.Path;
@@ -17,18 +18,26 @@ namespace ZiplineValley.Controllers.PathBuilder
         private Transform _targetPoint;
         [SerializeField]
         private PathVisualizer _visualizer;
+        [SerializeField]
+        private PathUserInput _pathUserInput;
 
         private PathModel currentPath = new PathModel();
 
         private Vector3? lastFirstPointPosition, lastTargetPointPosition;
+        private int layerMask;
 
-        private void Start()
+        private void Awake()
         {
-            currentPath.PathStartPosition = _firstPoint.position;
+            layerMask = LayerMask.GetMask(GlobalConstants.ObstacleLayerName);
         }
 
         private void Update()
         {
+            if (_pathUserInput.TargetPosition != null)
+            {
+                _targetPoint.position = _pathUserInput.TargetPosition.Value;
+            }
+
             if (WerePointsChanged())
             {
                 currentPath.PathStartPosition = _firstPoint.position;
@@ -45,7 +54,7 @@ namespace ZiplineValley.Controllers.PathBuilder
 
                 var direction = ((Vector2)_targetPoint.position - lastPoint).normalized;
                 var raycast2DHit = Physics2D.Raycast(lastPoint, direction, 
-                    Vector2.Distance(_targetPoint.position, lastPoint) + 0.1f);
+                    Vector2.Distance(_targetPoint.position, lastPoint) + 0.1f, layerMask);
 
                 if (raycast2DHit.collider != null)
                 {
@@ -72,6 +81,7 @@ namespace ZiplineValley.Controllers.PathBuilder
                 }
 
                 _visualizer.Draw(currentPath);
+                _pathUserInput.UpdateStartDraggingPositon(_targetPoint.position);
             }
         }
 
@@ -101,7 +111,7 @@ namespace ZiplineValley.Controllers.PathBuilder
                         if (points.Count == 0) { break; }
 
                         direction = (targetPosition - pointTo.Position).normalized;
-                        raycast2DHit = Physics2D.Raycast(pointTo.Position, direction);
+                        raycast2DHit = Physics2D.Raycast(pointTo.Position, direction, Mathf.Infinity, layerMask);
                         if (raycast2DHit.collider == null
                             || raycast2DHit.collider.GetComponent<ObstacleModel>() != obstacle)
                         {
@@ -127,7 +137,7 @@ namespace ZiplineValley.Controllers.PathBuilder
                         }
 
                         direction = (startPosition - pointFrom.Position).normalized;
-                        raycast2DHit = Physics2D.Raycast(pointFrom.Position, direction);
+                        raycast2DHit = Physics2D.Raycast(pointFrom.Position, direction, Mathf.Infinity, layerMask);
                         if (raycast2DHit.collider == null
                             || raycast2DHit.collider.GetComponent<ObstacleModel>() != obstacle)
                         {
@@ -179,7 +189,7 @@ namespace ZiplineValley.Controllers.PathBuilder
                 var lastPoint = pathModel.CollisionPoints[i];
                 var direction = (targetPosition - lastPoint).normalized;
                 var raycast2DHit = Physics2D.Raycast(lastPoint, direction,
-                    Vector2.Distance(targetPosition, lastPoint) + 0.1f);
+                    Vector2.Distance(targetPosition, lastPoint) + 0.1f, layerMask);
 
                 if (raycast2DHit.collider == null)
                 {

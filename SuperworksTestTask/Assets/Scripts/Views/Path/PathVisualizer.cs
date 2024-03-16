@@ -1,4 +1,3 @@
-using Codice.Client.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +8,8 @@ namespace ZiplineValley.Views.Path
 {
     public class PathVisualizer : MonoBehaviour
     {
+        private const float minDistanceBetweenPoints = 0.01f;
+
         [SerializeField]
         private LineRenderer _lineRenderer;
         [SerializeField]
