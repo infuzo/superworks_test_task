@@ -1,3 +1,4 @@
+using Codice.Client.Common;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -56,16 +57,21 @@ namespace ZiplineValley.Controllers.PathBuilder
                 {
                     if (!obstacleModel.IsPointInsideObstacle(_targetPoint.position))
                     {
+                        TryShrinkListOfCollisionPoints(currentPath, _targetPoint.position);
                         currentPath.CollisionPoints.AddRange(
-                            GetBypassingPath(obstacleModel, lastPoint, _targetPoint.position, collisionHitPosition));
+                            GetBypassingPoints(obstacleModel, lastPoint, _targetPoint.position, collisionHitPosition));
                     }
+                }
+                else
+                {
+                    TryShrinkListOfCollisionPoints(currentPath, _targetPoint.position);
                 }
 
                 _visualizer.Draw(currentPath);
             }
         }
 
-        private List<Vector2> GetBypassingPath(
+        private List<Vector2> GetBypassingPoints(
             ObstacleModel obstacle, 
             Vector2 startPosition,
             Vector2 targetPosition,
@@ -154,6 +160,36 @@ namespace ZiplineValley.Controllers.PathBuilder
                 return points
                     .OrderBy(p => Vector2.Distance(position, p.Position))
                     .FirstOrDefault();
+            }
+        }
+
+        private void TryShrinkListOfCollisionPoints(
+            PathModel pathModel, 
+            Vector2 targetPosition)
+        {
+            if (pathModel.CollisionPoints.Count == 0) { return; }
+
+            var indicesToRemove = new List<int>();
+            for (int i = pathModel.CollisionPoints.Count - 1; i >= 0; i--)
+            {
+                var lastPoint = pathModel.CollisionPoints[i];
+                var direction = (targetPosition - lastPoint).normalized;
+                var raycast2DHit = Physics2D.Raycast(lastPoint, direction,
+                    Vector2.Distance(targetPosition, lastPoint) + 0.1f);
+
+                if (raycast2DHit.collider == null)
+                {
+                    indicesToRemove.Add(i);
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            foreach (var index in indicesToRemove)
+            {
+                pathModel.CollisionPoints.RemoveAt(index);
             }
         }
 

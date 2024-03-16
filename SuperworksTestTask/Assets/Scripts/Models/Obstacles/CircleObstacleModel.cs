@@ -31,7 +31,7 @@ namespace ZiplineValley.Models.Obstacles
 
         private float GetRadius()
         {
-            return (transform.lossyScale.x / 2f) + 0.05f; 
+            return (transform.lossyScale.x / 2f) + 0.01f; 
         }
 
         public override bool IsPointInsideObstacle(Vector2 position)
