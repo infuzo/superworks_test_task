@@ -3,6 +3,8 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using ZiplineValley.Models;
+using ZiplineValley.Models.Home;
+using ZiplineValley.Models.Level;
 using ZiplineValley.Models.Obstacles;
 using ZiplineValley.Models.Path;
 using ZiplineValley.Views.Path;
@@ -19,6 +21,9 @@ namespace ZiplineValley.Controllers.PathBuilder
         private PathVisualizer _visualizer;
         [SerializeField]
         private PathUserInput _pathUserInput;
+
+        [Space, SerializeField]
+        private LevelModel _levelModel;
 
         private PathModel currentPath = new PathModel();
 
@@ -52,6 +57,7 @@ namespace ZiplineValley.Controllers.PathBuilder
 
                 currentPath.PathStartPosition = _firstPoint.position;
                 currentPath.PathEndPosition = _targetPoint.position;
+                _visualizer.SetState(_levelModel.HomeModel.IsPointerInside(_targetPoint.position) ? PathState.Complete : PathState.Incomplete);
 
                 var collisionHitPosition = Vector2.zero;
                 ObstacleModel obstacleModel = null;

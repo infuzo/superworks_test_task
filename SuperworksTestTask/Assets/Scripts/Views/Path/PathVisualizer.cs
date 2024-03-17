@@ -8,12 +8,15 @@ namespace ZiplineValley.Views.Path
 {
     public class PathVisualizer : MonoBehaviour
     {
-        private const float minDistanceBetweenPoints = 0.01f;
-
         [SerializeField]
         private LineRenderer _lineRenderer;
         [SerializeField]
-        private Transform _lineEnding;
+        private SpriteRenderer _lineEnding;
+
+        [Space, SerializeField]
+        private Color _colorIncomplete;
+        [SerializeField]
+        private Color _colorComplete;
 
         public void Draw(PathModel path)
         {
@@ -46,6 +49,20 @@ namespace ZiplineValley.Views.Path
             _lineRenderer.positionCount = 0;
             _lineRenderer.SetPositions(new Vector3[] { });
             _lineEnding.gameObject.SetActive(false);
+        }
+
+        public void SetState(PathState state)
+        {
+            try
+            {
+                var color = state == PathState.Incomplete ? _colorIncomplete : _colorComplete;
+
+                _lineRenderer.startColor = color;
+                _lineRenderer.endColor = color;
+                _lineEnding.color = color;
+
+            }
+            catch (Exception ex) { Debug.LogException(ex); }
         }
     }
 }
