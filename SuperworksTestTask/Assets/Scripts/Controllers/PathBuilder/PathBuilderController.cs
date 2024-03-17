@@ -3,7 +3,6 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using ZiplineValley.Models;
-using ZiplineValley.Models.Home;
 using ZiplineValley.Models.Level;
 using ZiplineValley.Models.Obstacles;
 using ZiplineValley.Models.Path;
@@ -13,6 +12,8 @@ namespace ZiplineValley.Controllers.PathBuilder
 {
     public class PathBuilderController : BaseController
     {
+        private const float minTimeFromLevelStartToCheckPath = 0.5f;
+
         [SerializeField]
         private Transform _firstPoint;
         [SerializeField]
@@ -30,15 +31,19 @@ namespace ZiplineValley.Controllers.PathBuilder
         private Vector3? lastFirstPointPosition, lastTargetPointPosition;
         private int layerMask;
         private Vector2? lastInvalidInput;
+        private float levelStartTimer = 0f;
 
         private void Awake()
         {
             layerMask = LayerMask.GetMask(GlobalConstants.ObstacleLayerName);
-            currentPath.PathEndPosition = _targetPoint.position;
+
+            InitializePath();
         }
 
         private void Update()
         {
+            if (!CheckLevelStartTimer()) { return; }
+
             if (_pathUserInput.TargetPosition != null)
             {
                 _targetPoint.position = _pathUserInput.TargetPosition.Value;
@@ -99,6 +104,24 @@ namespace ZiplineValley.Controllers.PathBuilder
 
                 _visualizer.Draw(currentPath);
             }
+        }
+
+        private void InitializePath()
+        {
+            _firstPoint.position = _levelModel.StartPlatformModel.PathInitialPosition;
+            _targetPoint.position = _levelModel.StartPlatformModel.PathStartTargetPosition;
+
+            currentPath.PathStartPosition = _firstPoint.position;
+            currentPath.PathEndPosition = _targetPoint.position;
+            _pathUserInput.UpdateStartDraggingPositon(currentPath.PathEndPosition);
+        }
+
+        private bool CheckLevelStartTimer()
+        {
+            if (levelStartTimer >= minTimeFromLevelStartToCheckPath) { return true; }
+            
+            levelStartTimer += Time.deltaTime;
+            return false;
         }
 
         private bool CheckInvalidInput()
@@ -250,7 +273,6 @@ namespace ZiplineValley.Controllers.PathBuilder
         {
             var result = false;
 
-            //todo: remove checking of changing of the first point
             if (lastFirstPointPosition == null 
                 || !Mathf.Approximately(Vector3.Distance(lastFirstPointPosition.Value, _firstPoint.position), 0f))
             {
