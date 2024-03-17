@@ -10,8 +10,11 @@ namespace ZiplineValley.Models.Level
         private HomeModel _homeModel;
         [SerializeField]
         private StartPlatformModel _startPlatformModel;
+        [SerializeField]
+        private int _initialCharacterCount;
 
         public HomeModel HomeModel => _homeModel;
         public StartPlatformModel StartPlatformModel => _startPlatformModel;
+        public int InitialCharacterCount => _initialCharacterCount;
     }
 }

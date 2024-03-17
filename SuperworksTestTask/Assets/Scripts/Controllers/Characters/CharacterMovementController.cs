@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using ZiplineValley.Models.Home;
 using ZiplineValley.Models.StartPlatform;
@@ -9,12 +10,44 @@ namespace ZiplineValley.Controllers.Characters
     {
         [SerializeField]
         private CharacterView _prefabCharacter;
+        [SerializeField]
+        private Transform _charactersParent;
+
+        private StartPlatformModel startPlatform;
+        private HomeModel homeModel;
+        private int initialCharactersCount;
+
+        private List<CharacterView> characterViews = new List<CharacterView> ();
 
         public void Initialize(
             StartPlatformModel startPlatform, 
-            HomeModel homeModel)
+            HomeModel homeModel,
+            int initialCharactersCount)
         {
+            this.startPlatform = startPlatform;
+            this.homeModel = homeModel;
+            this.initialCharactersCount = initialCharactersCount;
 
+            InstantiateCharacters();
+        }
+
+        private void InstantiateCharacters()
+        {
+            for (int i = 0; i < initialCharactersCount; i++)
+            {
+                var character = InstantiateSingleCharacter();
+
+                character.SetState(CharacterViewState.Normal);
+                character.SetPositionWithOffset(Vector2.Lerp(startPlatform.StartCharacterPosition, startPlatform.EndCharacterPosition,
+                    (float)i / (float)initialCharactersCount));
+            }
+        }
+
+        private CharacterView InstantiateSingleCharacter()
+        {
+            var character = Instantiate(_prefabCharacter, _charactersParent);
+            characterViews.Add(character);
+            return character;
         }
     }
 }
