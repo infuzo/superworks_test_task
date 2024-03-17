@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using ZiplineValley.Models.Home;
+using ZiplineValley.Models.Level;
 using ZiplineValley.Models.StartPlatform;
 using ZiplineValley.Views.Character;
 using ZiplineValley.Views.UI;
@@ -15,10 +16,10 @@ namespace ZiplineValley.Controllers.Characters
         private Transform _charactersParent;
         [SerializeField]
         private UserInterfaceView _userInterfaceView;
+        [SerializeField]
+        private float _charactersMovementSpeed = 10f;
 
-        private StartPlatformModel startPlatform;
-        private HomeModel homeModel;
-        private int initialCharactersCount;
+        private LevelModel levelModel;
 
         private List<CharacterView> characterViews = new List<CharacterView> ();
 
@@ -28,26 +29,24 @@ namespace ZiplineValley.Controllers.Characters
         }
 
         public void Initialize(
-            StartPlatformModel startPlatform, 
-            HomeModel homeModel,
-            int initialCharactersCount)
+            LevelModel levelModel)
         {
-            this.startPlatform = startPlatform;
-            this.homeModel = homeModel;
-            this.initialCharactersCount = initialCharactersCount;
+            this.levelModel = levelModel;
 
             InstantiateCharacters();
         }
 
         private void InstantiateCharacters()
         {
-            for (int i = 0; i < initialCharactersCount; i++)
+            for (int i = 0; i < levelModel.InitialCharacterCount; i++)
             {
                 var character = InstantiateSingleCharacter();
 
                 character.SetState(CharacterViewState.Normal);
-                character.SetPositionWithOffset(Vector2.Lerp(startPlatform.StartCharacterPosition, startPlatform.EndCharacterPosition,
-                    (float)i / (float)initialCharactersCount));
+                character.SetPositionWithOffset(Vector2.Lerp(
+                    levelModel.StartPlatformModel.StartCharacterPosition,
+                    levelModel.StartPlatformModel.EndCharacterPosition,
+                    (float)i / (float)levelModel.InitialCharacterCount));
             }
         }
 
@@ -60,7 +59,7 @@ namespace ZiplineValley.Controllers.Characters
 
         private void OnMoveCharactersRequested(bool start)
         {
-            Debug.Log(start);
+            Debug.Log(levelModel.IsPathAttachedToHome);
         }
 
     }

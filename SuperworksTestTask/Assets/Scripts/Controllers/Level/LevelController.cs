@@ -24,8 +24,8 @@ namespace ZiplineValley.Controllers
 
         private void LaunchLevel()
         {
-            pathBuilderController.Initialize(_levelModel.StartPlatformModel, _levelModel.HomeModel);
-            characterMovementController.Initialize(_levelModel.StartPlatformModel, _levelModel.HomeModel, _levelModel.InitialCharacterCount);
+            pathBuilderController.Initialize(_levelModel);
+            characterMovementController.Initialize(_levelModel);
         }
     }
 }

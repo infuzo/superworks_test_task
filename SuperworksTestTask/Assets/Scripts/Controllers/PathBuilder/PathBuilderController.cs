@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using ZiplineValley.Models;
 using ZiplineValley.Models.Home;
+using ZiplineValley.Models.Level;
 using ZiplineValley.Models.Obstacles;
 using ZiplineValley.Models.Path;
 using ZiplineValley.Models.StartPlatform;
@@ -26,7 +27,7 @@ namespace ZiplineValley.Controllers.PathBuilder
         private PathUserInput _pathUserInput;
 
         private PathModel currentPath = new PathModel();
-        private HomeModel homeModel;
+        private LevelModel levelModel;
 
         private Vector3? lastFirstPointPosition, lastTargetPointPosition;
         private int layerMask;
@@ -40,7 +41,7 @@ namespace ZiplineValley.Controllers.PathBuilder
 
         private void Update()
         {
-            if (homeModel == null) { return; }
+            if (levelModel == null || levelModel.IsCharacterMovementStarted) { return; }
 
             if (!CheckLevelStartTimer()) { return; }
 
@@ -62,7 +63,9 @@ namespace ZiplineValley.Controllers.PathBuilder
 
                 currentPath.PathStartPosition = _firstPoint.position;
                 currentPath.PathEndPosition = _targetPoint.position;
-                _visualizer.SetState(homeModel.IsPointerInside(_targetPoint.position) ? PathState.Complete : PathState.Incomplete);
+                levelModel.IsPathAttachedToHome = levelModel.HomeModel.IsPointerInside(_targetPoint.position);
+
+                _visualizer.SetState(levelModel.IsPathAttachedToHome ? PathState.Complete : PathState.Incomplete);
 
                 var collisionHitPosition = Vector2.zero;
                 ObstacleModel obstacleModel = null;
@@ -107,13 +110,12 @@ namespace ZiplineValley.Controllers.PathBuilder
         }
 
         public void Initialize(
-            StartPlatformModel startPlatformModel,
-            HomeModel homeModel)
+            LevelModel levelModel)
         {
             try
             {
-                InitializePath(startPlatformModel.PathInitialPosition, startPlatformModel.PathStartTargetPosition);
-                this.homeModel = homeModel;
+                InitializePath(levelModel.StartPlatformModel.PathInitialPosition, levelModel.StartPlatformModel.PathStartTargetPosition);
+                this.levelModel = levelModel;
             }
             catch (Exception ex) { Debug.LogException(ex); }
         }

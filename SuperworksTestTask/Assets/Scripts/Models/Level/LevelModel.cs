@@ -16,5 +16,8 @@ namespace ZiplineValley.Models.Level
         public HomeModel HomeModel => _homeModel;
         public StartPlatformModel StartPlatformModel => _startPlatformModel;
         public int InitialCharacterCount => _initialCharacterCount;
+
+        public bool IsPathAttachedToHome { get; set; }
+        public bool IsCharacterMovementStarted { get; set; }
     }
 }
