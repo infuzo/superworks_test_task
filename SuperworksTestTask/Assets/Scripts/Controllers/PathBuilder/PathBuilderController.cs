@@ -1,11 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using ZiplineValley.Models;
-using ZiplineValley.Models.Level;
+using ZiplineValley.Models.Home;
 using ZiplineValley.Models.Obstacles;
 using ZiplineValley.Models.Path;
+using ZiplineValley.Models.StartPlatform;
 using ZiplineValley.Views.Path;
 
 namespace ZiplineValley.Controllers.PathBuilder
@@ -23,10 +25,8 @@ namespace ZiplineValley.Controllers.PathBuilder
         [SerializeField]
         private PathUserInput _pathUserInput;
 
-        [Space, SerializeField]
-        private LevelModel _levelModel;
-
         private PathModel currentPath = new PathModel();
+        private HomeModel homeModel;
 
         private Vector3? lastFirstPointPosition, lastTargetPointPosition;
         private int layerMask;
@@ -36,12 +36,12 @@ namespace ZiplineValley.Controllers.PathBuilder
         private void Awake()
         {
             layerMask = LayerMask.GetMask(GlobalConstants.ObstacleLayerName);
-
-            InitializePath();
         }
 
         private void Update()
         {
+            if (homeModel == null) { return; }
+
             if (!CheckLevelStartTimer()) { return; }
 
             if (_pathUserInput.TargetPosition != null)
@@ -62,7 +62,7 @@ namespace ZiplineValley.Controllers.PathBuilder
 
                 currentPath.PathStartPosition = _firstPoint.position;
                 currentPath.PathEndPosition = _targetPoint.position;
-                _visualizer.SetState(_levelModel.HomeModel.IsPointerInside(_targetPoint.position) ? PathState.Complete : PathState.Incomplete);
+                _visualizer.SetState(homeModel.IsPointerInside(_targetPoint.position) ? PathState.Complete : PathState.Incomplete);
 
                 var collisionHitPosition = Vector2.zero;
                 ObstacleModel obstacleModel = null;
@@ -106,10 +106,24 @@ namespace ZiplineValley.Controllers.PathBuilder
             }
         }
 
-        private void InitializePath()
+        public void Initialize(
+            StartPlatformModel startPlatformModel,
+            HomeModel homeModel)
         {
-            _firstPoint.position = _levelModel.StartPlatformModel.PathInitialPosition;
-            _targetPoint.position = _levelModel.StartPlatformModel.PathStartTargetPosition;
+            try
+            {
+                InitializePath(startPlatformModel.PathInitialPosition, startPlatformModel.PathStartTargetPosition);
+                this.homeModel = homeModel;
+            }
+            catch (Exception ex) { Debug.LogException(ex); }
+        }
+
+        private void InitializePath(
+            Vector2 initialPosition, 
+            Vector2 startTargetPosition)
+        {
+            _firstPoint.position = initialPosition;
+            _targetPoint.position = startTargetPosition;
 
             currentPath.PathStartPosition = _firstPoint.position;
             currentPath.PathEndPosition = _targetPoint.position;
