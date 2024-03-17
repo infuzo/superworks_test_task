@@ -1,8 +1,9 @@
 {
-    "name": "ZiplineValley.Models",
-    "rootNamespace": "ZiplineValley.Models",
+    "name": "ZiplineValley.Views.Path",
+    "rootNamespace": "ZiplineValley.Views.Path",
     "references": [
-        "GUID:9a16f3da50c8bd54e994902483d99bc1"
+        "GUID:daaa38298d85e5f4198d04e5e3a2f4e8",
+        "GUID:43ebdc8fce623904fb3f00a39078fb48"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

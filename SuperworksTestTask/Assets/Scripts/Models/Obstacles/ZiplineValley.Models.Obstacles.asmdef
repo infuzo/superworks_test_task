@@ -1,9 +1,7 @@
 {
-    "name": "ZiplineValley.Models",
-    "rootNamespace": "ZiplineValley.Models",
-    "references": [
-        "GUID:9a16f3da50c8bd54e994902483d99bc1"
-    ],
+    "name": "ZiplineValley.Models.Obstacles",
+    "rootNamespace": "ZiplineValley.Models.Obstacles",
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
