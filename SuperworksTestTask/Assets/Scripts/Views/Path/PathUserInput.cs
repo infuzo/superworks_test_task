@@ -44,7 +44,7 @@ namespace ZiplineValley.Views.Path
             }
 
             wasDraggingPreviousFrame = true;
-            TargetPosition = _camera.ScreenToWorldPoint(Input.mousePosition);
+            TargetPosition = (Vector2)_camera.ScreenToWorldPoint(Input.mousePosition);
         }
 
         public void UpdateStartDraggingPositon(Vector2 position)
