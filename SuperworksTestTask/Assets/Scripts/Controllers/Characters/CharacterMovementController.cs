@@ -3,6 +3,7 @@ using UnityEngine;
 using ZiplineValley.Models.Home;
 using ZiplineValley.Models.StartPlatform;
 using ZiplineValley.Views.Character;
+using ZiplineValley.Views.UI;
 
 namespace ZiplineValley.Controllers.Characters
 {
@@ -12,12 +13,19 @@ namespace ZiplineValley.Controllers.Characters
         private CharacterView _prefabCharacter;
         [SerializeField]
         private Transform _charactersParent;
+        [SerializeField]
+        private UserInterfaceView _userInterfaceView;
 
         private StartPlatformModel startPlatform;
         private HomeModel homeModel;
         private int initialCharactersCount;
 
         private List<CharacterView> characterViews = new List<CharacterView> ();
+
+        private void Start()
+        {
+            _userInterfaceView.CharacterControlView.OnMoveCharactersRequested += OnMoveCharactersRequested;
+        }
 
         public void Initialize(
             StartPlatformModel startPlatform, 
@@ -49,5 +57,11 @@ namespace ZiplineValley.Controllers.Characters
             characterViews.Add(character);
             return character;
         }
+
+        private void OnMoveCharactersRequested(bool start)
+        {
+            Debug.Log(start);
+        }
+
     }
 }
