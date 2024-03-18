@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using ZiplineValley.Controllers.Characters;
 using ZiplineValley.Controllers.PathBuilder;
 using ZiplineValley.Models.Level;
@@ -29,8 +30,14 @@ namespace ZiplineValley.Controllers
         private void Start()
         {
             _levelModel.OnCharactersAtHomeValueChanged += OnCharactersAtHomeValueChanged;
+            _userInterface.EndGamePopupView.OnRestartRequested += OnRestartRequested;
 
             LaunchLevel();
+        }
+
+        private void OnRestartRequested()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
         private void OnCharactersAtHomeValueChanged()
