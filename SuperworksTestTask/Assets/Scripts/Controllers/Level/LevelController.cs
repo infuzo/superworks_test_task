@@ -40,8 +40,9 @@ namespace ZiplineValley.Controllers
         {
             if (_levelModel.AliveCharacters == 0)
             {
-                _userInterface.EndGamePopupView.Show(false, 0, 0);
+                _userInterface.EndGamePopupView.Show(false, 0, 0, 0);
             }
+            OnCharactersAtHomeValueChanged();
         }
 
         private void OnRestartRequested()
@@ -55,7 +56,8 @@ namespace ZiplineValley.Controllers
             {
                 _userInterface.EndGamePopupView.Show(
                     _levelModel.AliveCharacters >= _levelModel.MinCharactersCountToComplete,
-                    _levelModel.AliveCharacters, _levelModel.MinCharactersCountToComplete) ;
+                    _levelModel.AliveCharacters, _levelModel.MinCharactersCountToComplete,
+                    _levelModel.InitialCharacterCount);
             }
         }
 

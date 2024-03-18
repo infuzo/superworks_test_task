@@ -29,13 +29,21 @@ namespace ZiplineValley.Views.UI.EndGamePopup
         public void Show(
             bool success,
             int aliveCharacters,
-            int minCharacters)
+            int minCharacters,
+            int initialCharacters)
         {
             try
             {
-                _textHeader.text = success
-                    ? "COMPLETED!"
-                    : "FAILED!";
+                if (success)
+                {
+                    _textHeader.text = aliveCharacters >= initialCharacters
+                        ? "PERFECT!"
+                        : "COMPLETED";
+                }
+                else
+                {
+                    _textHeader.text = "FAILED";
+                }
 
                 if (success)
                 {
@@ -50,7 +58,7 @@ namespace ZiplineValley.Views.UI.EndGamePopup
                     }
                     else
                     {
-                        _textStatistics.text = $"You need to escort {minCharacters - aliveCharacters} characters more.";
+                        _textStatistics.text = $"You need to escort {minCharacters - aliveCharacters} characters more";
                     }
                 }
 

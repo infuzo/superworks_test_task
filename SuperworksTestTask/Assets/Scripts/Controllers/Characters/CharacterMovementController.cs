@@ -33,7 +33,7 @@ namespace ZiplineValley.Controllers.Characters
             _userInterfaceView.CharacterControlView.OnMoveCharactersRequested += OnMoveCharactersRequested;
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             TryMoveCharacters();
         }
@@ -86,7 +86,7 @@ namespace ZiplineValley.Controllers.Characters
 
             var currentTargetPoint = levelModel.Path[character.CurrentPointIndex];
 
-            var speed = levelModel.CharacterMovementSpeed * Time.deltaTime;
+            var speed = levelModel.CharacterMovementSpeed;
             var newPosition = Vector2.MoveTowards(characterView.GetPosition(), currentTargetPoint, speed);
             character.PassedDistance += Vector2.Distance(characterView.GetPosition(), newPosition);
             characterView.SetPosition(newPosition);
@@ -169,9 +169,11 @@ namespace ZiplineValley.Controllers.Characters
 
         private void KillCharacter(CharacterMoveData character)
         {
-            characterViews.Remove(character);
-            Destroy(character.Character.gameObject);
-            levelModel.AliveCharacters--;
+            if (characterViews.Remove(character))
+            {
+                Destroy(character.Character.gameObject);
+                levelModel.AliveCharacters--;
+            }
         }
 
         private void OnMoveCharactersRequested(bool start)
