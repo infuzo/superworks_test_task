@@ -1,0 +1,17 @@
+{
+    "name": "ZiplineValley.Models.Level",
+    "rootNamespace": "ZiplineValley.Models.Level",
+    "references": [
+        "GUID:bafc460352fc40b4ea21b23005e6af39",
+        "GUID:d6374d83dae0c2a45b03f1b937eae59f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
