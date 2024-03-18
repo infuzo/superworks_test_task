@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using ZiplineValley.Models.Level;
 using ZiplineValley.Views.Character;
+using ZiplineValley.Views.CharacterCounter;
 using ZiplineValley.Views.UI;
 
 namespace ZiplineValley.Controllers.Characters
@@ -19,8 +21,12 @@ namespace ZiplineValley.Controllers.Characters
 
         private LevelModel levelModel;
         private bool areCharactersMoving;
+        private int charactersAtStart;
 
         private List<CharacterMoveData> characterViews = new List<CharacterMoveData> ();
+
+        private CharacterCounterView startCharacterCounter;
+        private CharacterCounterView homeCharacterCounter;
 
         private void Start()
         {
@@ -39,6 +45,15 @@ namespace ZiplineValley.Controllers.Characters
             for (int i = 0; i < characterViews.Count; i++)
             {
                 var thisCharacter = characterViews[i];
+                if (!thisCharacter.WasMovementStarted)
+                {
+                    charactersAtStart--;
+                    thisCharacter.Character.SetPositionWithOffset(levelModel.Path[0]);
+                    startCharacterCounter.SetLeftPart(charactersAtStart);
+                    
+                    thisCharacter.WasMovementStarted = true;
+                }
+
                 CharacterMoveData nextCharacter = null;
                 if (i < characterViews.Count - 1)
                 {
@@ -49,12 +64,6 @@ namespace ZiplineValley.Controllers.Characters
                 
                 if (nextCharacter != null)
                 {
-                    if (!nextCharacter.WasMovementStarted)
-                    {
-                        nextCharacter.Character.SetPositionWithOffset(levelModel.Path[0]);
-                        nextCharacter.WasMovementStarted = true;
-                    }
-
                     if (thisCharacter.PassedDistance < _minPassedDistanceToMoveNextCharacter)
                     {
                         break;
@@ -99,11 +108,19 @@ namespace ZiplineValley.Controllers.Characters
         }
 
         public void Initialize(
-            LevelModel levelModel)
+            LevelModel levelModel, 
+            CharacterCounterView startCharacterCounter,
+            CharacterCounterView homeCharacterCounter)
         {
-            this.levelModel = levelModel;
+            try
+            {
+                this.levelModel = levelModel;
+                this.startCharacterCounter = startCharacterCounter;
+                this.homeCharacterCounter = homeCharacterCounter;
 
-            InstantiateCharacters();
+                InstantiateCharacters();
+            }
+            catch (Exception ex) { Debug.LogException(ex); }
         }
 
         private void InstantiateCharacters()
@@ -121,6 +138,10 @@ namespace ZiplineValley.Controllers.Characters
             }
 
             characterViews.Reverse();
+            charactersAtStart = characterViews.Count;
+            
+            startCharacterCounter.SetRightPart(levelModel.InitialCharacterCount);
+            startCharacterCounter.SetLeftPart(charactersAtStart);
         }
 
         private CharacterView InstantiateSingleCharacter()
