@@ -11,6 +11,8 @@ namespace ZiplineValley.Views.Character
         private GameObject _movingStateRepresentation;
         [SerializeField]
         private Vector2 _normalPositionOffset;
+        [SerializeField]
+        private Rigidbody2D _rigidbody;
 
         public void SetState(CharacterViewState state)
         {
@@ -22,13 +24,30 @@ namespace ZiplineValley.Views.Character
             catch (Exception ex) { Debug.LogException(ex); }
         }
 
-        public void SetPositionWithOffset(Vector2 position)
+        public void SetPosition(Vector2 position)
         {
             try
             {
-                transform.position = position + _normalPositionOffset;
+                if (_normalStateRepresentation.activeInHierarchy)
+                {
+                    _rigidbody.position = position + _normalPositionOffset;
+                }
+                else
+                {
+                    _rigidbody.position = position;
+                }
             }
             catch (Exception ex) { Debug.LogException(ex); }
+        }
+
+        public Vector2 GetPosition()
+        {
+            try
+            {
+                return _rigidbody.position;
+            }
+            catch (Exception ex) { Debug.LogException(ex); }
+            return Vector2.zero;
         }
     }
 }
