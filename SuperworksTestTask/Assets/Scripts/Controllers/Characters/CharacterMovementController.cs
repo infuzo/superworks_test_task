@@ -33,7 +33,7 @@ namespace ZiplineValley.Controllers.Characters
             _userInterfaceView.CharacterControlView.OnMoveCharactersRequested += OnMoveCharactersRequested;
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             TryMoveCharacters();
         }
@@ -48,7 +48,7 @@ namespace ZiplineValley.Controllers.Characters
                 if (!thisCharacter.WasMovementStarted)
                 {
                     charactersAtStart--;
-                    thisCharacter.Character.SetPositionWithOffset(levelModel.Path[0]);
+                    thisCharacter.Character.SetPosition(levelModel.Path[0]);
                     startCharacterCounter.SetLeftPart(charactersAtStart);
                     
                     thisCharacter.WasMovementStarted = true;
@@ -74,27 +74,27 @@ namespace ZiplineValley.Controllers.Characters
 
         private bool MoveSingleCharacter(CharacterMoveData character)
         {
-            character.Character.SetState(CharacterViewState.Moving);
+            var characterView = character.Character;
 
-            var characterTransform = character.Character.transform;
+            characterView.SetState(CharacterViewState.Moving);
 
             if (character.CurrentPointIndex < 0)
             {
                 character.CurrentPointIndex = 1;
-                characterTransform.position = levelModel.Path[0];
+                characterView.SetPosition(levelModel.Path[0]);
             }
 
             var currentTargetPoint = levelModel.Path[character.CurrentPointIndex];
 
-            var speed = levelModel.CharacterMovementSpeed * Time.deltaTime;
-            var newPosition = Vector2.MoveTowards(characterTransform.position, currentTargetPoint, speed);
-            character.PassedDistance += Vector2.Distance(characterTransform.position, newPosition);
-            characterTransform.position = newPosition;
+            var speed = levelModel.CharacterMovementSpeed;
+            var newPosition = Vector2.MoveTowards(characterView.GetPosition(), currentTargetPoint, speed);
+            character.PassedDistance += Vector2.Distance(characterView.GetPosition(), newPosition);
+            characterView.SetPosition(newPosition);
 
-            var distance = Vector2.Distance(characterTransform.position, currentTargetPoint);
+            var distance = Vector2.Distance(characterView.GetPosition(), currentTargetPoint);
             if (distance <= 0.01f)
             {
-                characterTransform.position = currentTargetPoint;
+                characterView.SetPosition(currentTargetPoint);
                 character.CurrentPointIndex++;
             }
 
@@ -133,7 +133,7 @@ namespace ZiplineValley.Controllers.Characters
                 var character = InstantiateSingleCharacter();
 
                 character.SetState(CharacterViewState.Normal);
-                character.SetPositionWithOffset(Vector2.Lerp(
+                character.SetPosition(Vector2.Lerp(
                     levelModel.StartPlatformModel.StartCharacterPosition,
                     levelModel.StartPlatformModel.EndCharacterPosition,
                     (float)i / (float)levelModel.InitialCharacterCount));
@@ -152,12 +152,28 @@ namespace ZiplineValley.Controllers.Characters
         private CharacterView InstantiateSingleCharacter()
         {
             var character = Instantiate(_prefabCharacter, _charactersParent);
-            characterViews.Add(new CharacterMoveData 
+            var movementData = new CharacterMoveData
             {
-                Character = character, 
-                CurrentPointIndex = 0 
-            });
+                Character = character,
+                CurrentPointIndex = 0
+            };
+            characterViews.Add(movementData);
+            character.OnTrapCollision += () => OnTrapCollision(movementData);
             return character;
+        }
+
+        private void OnTrapCollision(CharacterMoveData character)
+        {
+            KillCharacter(character);
+        }
+
+        private void KillCharacter(CharacterMoveData character)
+        {
+            if (characterViews.Remove(character))
+            {
+                Destroy(character.Character.gameObject);
+                levelModel.AliveCharacters--;
+            }
         }
 
         private void OnMoveCharactersRequested(bool start)
@@ -182,7 +198,7 @@ namespace ZiplineValley.Controllers.Characters
                 homeModel.StartCharacterPosition,
                 homeModel.EndCharacterPosition,
                 (float)levelModel.CharactersAtHome / (float)levelModel.InitialCharacterCount);
-            character.Character.SetPositionWithOffset(homePosition);
+            character.Character.SetPosition(homePosition);
             character.Character.SetState(CharacterViewState.Normal);
 
             levelModel.CharactersAtHome++;

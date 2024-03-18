@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using ZiplineValley.Controllers.Characters;
@@ -23,6 +24,8 @@ namespace ZiplineValley.Controllers
         private CharacterCounterView _homeCharacterCounter;
         [SerializeField]
         private UserInterfaceView _userInterface;
+        [SerializeField]
+        private GameObject _levelCompletedParticles;
 
         private PathBuilderController pathBuilderController => ControllersStorage.TryGetController<PathBuilderController>();
         private CharacterMovementController characterMovementController => ControllersStorage.TryGetController<CharacterMovementController>();
@@ -30,9 +33,21 @@ namespace ZiplineValley.Controllers
         private void Start()
         {
             _levelModel.OnCharactersAtHomeValueChanged += OnCharactersAtHomeValueChanged;
+            _levelModel.OnAliveCharactersValueChanged += OnAliveCharactersValueChanged;
+            
             _userInterface.EndGamePopupView.OnRestartRequested += OnRestartRequested;
+            _userInterface.OnRestartRequested += OnRestartRequested;
 
             LaunchLevel();
+        }
+
+        private void OnAliveCharactersValueChanged()
+        {
+            if (_levelModel.AliveCharacters == 0)
+            {
+                _userInterface.EndGamePopupView.Show(false, 0, 0, 0);
+            }
+            OnCharactersAtHomeValueChanged();
         }
 
         private void OnRestartRequested()
@@ -44,7 +59,19 @@ namespace ZiplineValley.Controllers
         {
             if (_levelModel.CharactersAtHome >= _levelModel.AliveCharacters)
             {
-                _userInterface.EndGamePopupView.Show(_levelModel.AliveCharacters, _levelModel.MinCharactersCountToComplete);
+                var success = _levelModel.AliveCharacters >= _levelModel.MinCharactersCountToComplete;
+                if (!success || _levelCompletedParticles == null)
+                {
+                    _userInterface.EndGamePopupView.Show(
+                        success,
+                        _levelModel.AliveCharacters, 
+                        _levelModel.MinCharactersCountToComplete,
+                        _levelModel.InitialCharacterCount);
+                }
+                else
+                {
+                    StartCoroutine(CoroutineShowCompletePopupAfterParticles());
+                }
             }
         }
 
@@ -55,6 +82,17 @@ namespace ZiplineValley.Controllers
                 _levelModel, 
                 _startCharacterCounter, 
                 _homeCharacterCounter);
+        }
+
+        private IEnumerator CoroutineShowCompletePopupAfterParticles()
+        {
+            _levelCompletedParticles.SetActive(true);
+            yield return new WaitForSeconds(1.5f);
+            _userInterface.EndGamePopupView.Show(
+                true,
+                _levelModel.AliveCharacters, 
+                _levelModel.MinCharactersCountToComplete,
+                _levelModel.InitialCharacterCount);
         }
     }
 }

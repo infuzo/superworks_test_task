@@ -32,6 +32,7 @@ namespace ZiplineValley.Models.Level
         #region Values changing during the gameplay
 
         public event Action OnCharactersAtHomeValueChanged = delegate { };
+        public event Action OnAliveCharactersValueChanged = delegate { };
 
         public bool IsPathChanging { get; set; }
         public bool IsPathAttachedToHome { get; set; }
@@ -59,9 +60,10 @@ namespace ZiplineValley.Models.Level
             get => ro_aliveCharacters;
             set
             {
+                ro_aliveCharacters = value;
                 try
                 {
-                    ro_aliveCharacters = value;
+                    OnAliveCharactersValueChanged?.Invoke();
                 }
                 catch (Exception ex) { Debug.LogException(ex); }
             }
