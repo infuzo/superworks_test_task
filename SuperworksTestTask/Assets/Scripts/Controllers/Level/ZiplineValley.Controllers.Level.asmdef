@@ -1,0 +1,22 @@
+{
+    "name": "ZiplineValley.Controllers.Level",
+    "rootNamespace": "ZiplineValley.Controllers.Level",
+    "references": [
+        "GUID:67eea643e6e062044a3b5cf92330e254",
+        "GUID:d6374d83dae0c2a45b03f1b937eae59f",
+        "GUID:bafc460352fc40b4ea21b23005e6af39",
+        "GUID:f65e611b6942f5f47859c5d6f750dd9f",
+        "GUID:e6f10b19b73715646954c6c80b94da58",
+        "GUID:743ab5ad7a8a2894cb43bd9a0ee99982",
+        "GUID:4b962fc03761b1740ae7ce7b67bd9812"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

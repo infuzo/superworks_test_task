@@ -1,0 +1,14 @@
+{
+    "name": "ZiplineValley.Views.CharacterView",
+    "rootNamespace": "ZiplineValley.Views.Character",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

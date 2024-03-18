@@ -191,6 +191,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83a5713a5c498774da3242a71d5931ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &487923997 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 374386133863684376, guid: 3b2a7dfc5e8f82c4792e57ac832377f3, type: 3}
+  m_PrefabInstance: {fileID: 487923995}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05f3a232c34e6f44089d869f55c70e8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &487923998 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8975110718713854007, guid: 3b2a7dfc5e8f82c4792e57ac832377f3, type: 3}
+  m_PrefabInstance: {fileID: 487923995}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05f3a232c34e6f44089d869f55c70e8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &685415145
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -214,6 +236,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameBehaviour
       objectReference: {fileID: 0}
+    - target: {fileID: 1606695174253739251, guid: c6d4f0792cdf9b9429edb7cd76de9f16, type: 3}
+      propertyPath: _levelModel
+      value: 
+      objectReference: {fileID: 487923996}
+    - target: {fileID: 1606695174253739251, guid: c6d4f0792cdf9b9429edb7cd76de9f16, type: 3}
+      propertyPath: _homeCharacterCounter
+      value: 
+      objectReference: {fileID: 487923998}
+    - target: {fileID: 1606695174253739251, guid: c6d4f0792cdf9b9429edb7cd76de9f16, type: 3}
+      propertyPath: _startCharacterCounter
+      value: 
+      objectReference: {fileID: 487923997}
     - target: {fileID: 4839029216845262553, guid: c6d4f0792cdf9b9429edb7cd76de9f16, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -257,6 +291,10 @@ PrefabInstance:
     - target: {fileID: 4839029216845262553, guid: c6d4f0792cdf9b9429edb7cd76de9f16, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8035945094177348268, guid: c6d4f0792cdf9b9429edb7cd76de9f16, type: 3}
+      propertyPath: _charactersMovementSpeed
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6d4f0792cdf9b9429edb7cd76de9f16, type: 3}

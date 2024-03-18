@@ -136,6 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _homeModel: {fileID: 6784770179426610261}
   _startPlatformModel: {fileID: 177826467363775267}
+  _initialCharacterCount: 5
 --- !u!1001 &232338597193857160
 PrefabInstance:
   m_ObjectHideFlags: 0

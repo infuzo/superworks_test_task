@@ -1,0 +1,14 @@
+{
+    "name": "ZiplineValley.Views.UI.CharacterControl",
+    "rootNamespace": "ZiplineValley.Views.UI.CharacterControl",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
