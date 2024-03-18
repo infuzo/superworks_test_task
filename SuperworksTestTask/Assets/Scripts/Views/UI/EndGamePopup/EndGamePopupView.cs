@@ -10,6 +10,8 @@ namespace ZiplineValley.Views.UI.EndGamePopup
         public event Action OnRestartRequested = delegate { };
 
         [SerializeField]
+        private TMP_Text _textHeader;
+        [SerializeField]
         private TMP_Text _textStatistics;
         [SerializeField]
         private Button _buttonRestart;
@@ -25,16 +27,36 @@ namespace ZiplineValley.Views.UI.EndGamePopup
         }
 
         public void Show(
+            bool success,
             int aliveCharacters,
             int minCharacters)
         {
-            var successRate = Mathf.RoundToInt(Mathf.Clamp01((float)aliveCharacters / (float)minCharacters) * 100f);
+            try
+            {
+                _textHeader.text = success
+                    ? "COMPLETED!"
+                    : "FAILED!";
 
-            _textStatistics.text =
-                $"Alive characters: {aliveCharacters}\n" +
-                $"Success Rate: {successRate} %";
+                if (success)
+                {
+                    _textStatistics.text =
+                        $"Alive characters: {aliveCharacters}";
+                }
+                else
+                {
+                    if (aliveCharacters <= 0)
+                    {
+                        _textStatistics.text = "All characters died";
+                    }
+                    else
+                    {
+                        _textStatistics.text = $"You need to escort {minCharacters - aliveCharacters} characters more.";
+                    }
+                }
 
-            gameObject.SetActive(true);
+                gameObject.SetActive(true);
+            }
+            catch (Exception ex) { Debug.LogException(ex); }
         }
     }
 }

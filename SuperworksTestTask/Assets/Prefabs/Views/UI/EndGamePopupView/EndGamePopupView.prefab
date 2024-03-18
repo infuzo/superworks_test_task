@@ -421,6 +421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77c7eb2793eb7de4ea0be6e549758807, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _textHeader: {fileID: 7250801680260703463}
   _textStatistics: {fileID: 4264532321183175966}
   _buttonRestart: {fileID: 733758732177415057}
 --- !u!95 &2685838350912595611
@@ -628,7 +629,7 @@ GameObject:
   - component: {fileID: 5908612846158401729}
   - component: {fileID: 7250801680260703463}
   m_Layer: 0
-  m_Name: CaptionCompleted
+  m_Name: TextHeader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
