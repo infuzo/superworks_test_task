@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -14,6 +15,12 @@ namespace ZiplineValley.Views.UI.CharacterControl
 
         void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
         {
+            StartCoroutine(CoroutineInvokeStartMovement());
+        }
+
+        private IEnumerator CoroutineInvokeStartMovement()
+        {
+            yield return null;  
             OnMoveCharactersRequested.Invoke(true);
         }
 

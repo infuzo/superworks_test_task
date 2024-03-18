@@ -55,6 +55,11 @@ namespace ZiplineValley.Controllers.PathBuilder
                 _pathUserInput.UpdateStartDraggingPositon(currentPath.PathEndPosition);
             }
 
+            if (!levelModel.IsCharacterMovementStarted)
+            {
+                levelModel.IsPathChanging = _pathUserInput.TargetPosition != null;
+            }
+
             if (!levelModel.IsCharacterMovementStarted && WerePointsChanged())
             {
                 _pathUserInput.UpdateStartDraggingPositon(_targetPoint.position);

@@ -1,5 +1,6 @@
 using UnityEngine;
 using ZiplineValley.Views.UI.CharacterControl;
+using ZiplineValley.Views.UI.EndGamePopup;
 
 namespace ZiplineValley.Views.UI
 {
@@ -7,7 +8,10 @@ namespace ZiplineValley.Views.UI
     {
         [SerializeField]
         private CharacterControlView _characterControlView;
+        [SerializeField]
+        private EndGamePopupView _endGamePopupView;
 
         public CharacterControlView CharacterControlView => _characterControlView;
+        public EndGamePopupView EndGamePopupView => _endGamePopupView;
     }
 }

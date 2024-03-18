@@ -143,6 +143,8 @@ namespace ZiplineValley.Controllers.Characters
             characterViews.Reverse();
             charactersAtStart = characterViews.Count;
             
+            levelModel.AliveCharacters = charactersAtStart;
+
             startCharacterCounter.SetRightPart(levelModel.InitialCharacterCount);
             startCharacterCounter.SetLeftPart(charactersAtStart);
         }
@@ -160,7 +162,7 @@ namespace ZiplineValley.Controllers.Characters
 
         private void OnMoveCharactersRequested(bool start)
         {
-            if (start && levelModel.IsPathAttachedToHome)
+            if (start && levelModel.IsPathAttachedToHome && !levelModel.IsPathChanging)
             {
                 levelModel.IsCharacterMovementStarted = true;
                 areCharactersMoving = true;
