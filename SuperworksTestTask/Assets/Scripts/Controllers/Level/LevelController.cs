@@ -31,7 +31,9 @@ namespace ZiplineValley.Controllers
         {
             _levelModel.OnCharactersAtHomeValueChanged += OnCharactersAtHomeValueChanged;
             _levelModel.OnAliveCharactersValueChanged += OnAliveCharactersValueChanged;
+            
             _userInterface.EndGamePopupView.OnRestartRequested += OnRestartRequested;
+            _userInterface.OnRestartRequested += OnRestartRequested;
 
             LaunchLevel();
         }
