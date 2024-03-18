@@ -152,12 +152,26 @@ namespace ZiplineValley.Controllers.Characters
         private CharacterView InstantiateSingleCharacter()
         {
             var character = Instantiate(_prefabCharacter, _charactersParent);
-            characterViews.Add(new CharacterMoveData 
+            var movementData = new CharacterMoveData
             {
-                Character = character, 
-                CurrentPointIndex = 0 
-            });
+                Character = character,
+                CurrentPointIndex = 0
+            };
+            characterViews.Add(movementData);
+            character.OnTrapCollision += () => OnTrapCollision(movementData);
             return character;
+        }
+
+        private void OnTrapCollision(CharacterMoveData character)
+        {
+            KillCharacter(character);
+        }
+
+        private void KillCharacter(CharacterMoveData character)
+        {
+            characterViews.Remove(character);
+            Destroy(character.Character.gameObject);
+            levelModel.AliveCharacters--;
         }
 
         private void OnMoveCharactersRequested(bool start)

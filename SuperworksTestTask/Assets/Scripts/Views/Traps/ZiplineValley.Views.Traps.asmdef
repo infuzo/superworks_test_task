@@ -1,9 +1,7 @@
 {
-    "name": "ZiplineValley.Views.CharacterView",
-    "rootNamespace": "ZiplineValley.Views.Character",
-    "references": [
-        "GUID:1256f66add1179342bdb5f887dbaf58f"
-    ],
+    "name": "ZiplineValley.Views.Traps",
+    "rootNamespace": "ZiplineValley.Views.Traps",
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

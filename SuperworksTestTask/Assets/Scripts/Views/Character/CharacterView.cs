@@ -1,10 +1,13 @@
 using System;
 using UnityEngine;
+using ZiplineValley.Views.Traps;
 
 namespace ZiplineValley.Views.Character
 {
     public class CharacterView : MonoBehaviour
     {
+        public event Action OnTrapCollision = delegate { }; 
+
         [SerializeField]
         private GameObject _normalStateRepresentation;
         [SerializeField]
@@ -48,6 +51,14 @@ namespace ZiplineValley.Views.Character
             }
             catch (Exception ex) { Debug.LogException(ex); }
             return Vector2.zero;
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.GetComponent<TrapView>() != null)
+            {
+                OnTrapCollision.Invoke();
+            }
         }
     }
 }
