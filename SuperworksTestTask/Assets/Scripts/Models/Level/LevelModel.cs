@@ -15,12 +15,15 @@ namespace ZiplineValley.Models.Level
         private int _initialCharacterCount = 5;
         [SerializeField]
         private float _charactersMovementSpeed = 3f;
+        [SerializeField]
+        private int _minCharactersCountToComplete = 3;
 
         #region Predefined values
         public HomeModel HomeModel => _homeModel;
         public StartPlatformModel StartPlatformModel => _startPlatformModel;
         public int InitialCharacterCount => _initialCharacterCount;
         public float CharacterMovementSpeed => _charactersMovementSpeed;
+        public int MinCharactersCountToComplete => _minCharactersCountToComplete;
         #endregion
 
         #region Values changing during the gameplay

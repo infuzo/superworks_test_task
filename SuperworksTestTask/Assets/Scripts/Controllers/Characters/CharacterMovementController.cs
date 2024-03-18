@@ -119,6 +119,9 @@ namespace ZiplineValley.Controllers.Characters
                 this.homeCharacterCounter = homeCharacterCounter;
 
                 InstantiateCharacters();
+
+                homeCharacterCounter.SetLeftPart(0);
+                homeCharacterCounter.SetRightPart(levelModel.MinCharactersCountToComplete);
             }
             catch (Exception ex) { Debug.LogException(ex); }
         }
@@ -181,6 +184,7 @@ namespace ZiplineValley.Controllers.Characters
             character.Character.SetState(CharacterViewState.Normal);
 
             levelModel.CharactersAtHome++;
+            homeCharacterCounter.SetLeftPart(levelModel.CharactersAtHome);
         }
     }
 }
