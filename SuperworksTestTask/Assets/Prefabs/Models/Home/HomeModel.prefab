@@ -280,8 +280,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _collider: {fileID: 7316634628057057865}
-  _startCharacterPoint: {fileID: 0}
-  _endCharacterPoint: {fileID: 0}
+  _startCharacterPoint: {fileID: 806697721149490923}
+  _endCharacterPoint: {fileID: 4425107490616637001}
 --- !u!61 &7316634628057057865
 BoxCollider2D:
   m_ObjectHideFlags: 0

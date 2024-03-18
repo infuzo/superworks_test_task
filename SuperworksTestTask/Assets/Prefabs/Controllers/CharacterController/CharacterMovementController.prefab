@@ -46,3 +46,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prefabCharacter: {fileID: 1263823709751260846, guid: d3e50637b5d007d4b9cfc1fcd6d51150, type: 3}
   _charactersParent: {fileID: 4158802955165486085}
+  _userInterfaceView: {fileID: 0}
+  _charactersMovementSpeed: 10
+  _minPassedDistanceToMoveNextCharacter: 0.5

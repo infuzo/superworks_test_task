@@ -41,7 +41,7 @@ namespace ZiplineValley.Controllers.PathBuilder
 
         private void Update()
         {
-            if (levelModel == null || levelModel.IsCharacterMovementStarted) { return; }
+            if (levelModel == null) { return; }
 
             if (!CheckLevelStartTimer()) { return; }
 
@@ -55,7 +55,7 @@ namespace ZiplineValley.Controllers.PathBuilder
                 _pathUserInput.UpdateStartDraggingPositon(currentPath.PathEndPosition);
             }
 
-            if (WerePointsChanged())
+            if (!levelModel.IsCharacterMovementStarted && WerePointsChanged())
             {
                 _pathUserInput.UpdateStartDraggingPositon(_targetPoint.position);
 
@@ -106,7 +106,16 @@ namespace ZiplineValley.Controllers.PathBuilder
                 }
 
                 _visualizer.Draw(currentPath);
+                SetPathToLevelModel();
             }
+        }
+
+        private void SetPathToLevelModel()
+        {
+            levelModel.Path.Clear();
+            levelModel.Path.Add(currentPath.PathStartPosition);
+            levelModel.Path.AddRange(currentPath.CollisionPoints);
+            levelModel.Path.Add(currentPath.PathEndPosition);
         }
 
         public void Initialize(
@@ -114,8 +123,8 @@ namespace ZiplineValley.Controllers.PathBuilder
         {
             try
             {
-                InitializePath(levelModel.StartPlatformModel.PathInitialPosition, levelModel.StartPlatformModel.PathStartTargetPosition);
                 this.levelModel = levelModel;
+                InitializePath(levelModel.StartPlatformModel.PathInitialPosition, levelModel.StartPlatformModel.PathStartTargetPosition);
             }
             catch (Exception ex) { Debug.LogException(ex); }
         }
