@@ -264,6 +264,10 @@ PrefabInstance:
       propertyPath: _startCharacterCounter
       value: 
       objectReference: {fileID: 487923997}
+    - target: {fileID: 1606695174253739251, guid: c6d4f0792cdf9b9429edb7cd76de9f16, type: 3}
+      propertyPath: _levelCompletedParticles
+      value: 
+      objectReference: {fileID: 893711910}
     - target: {fileID: 4839029216845262553, guid: c6d4f0792cdf9b9429edb7cd76de9f16, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -318,6 +322,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8802681241125893134, guid: c6d4f0792cdf9b9429edb7cd76de9f16, type: 3}
   m_PrefabInstance: {fileID: 685415145}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &893711910 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4851614375501260521, guid: 3b2a7dfc5e8f82c4792e57ac832377f3, type: 3}
+  m_PrefabInstance: {fileID: 487923995}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1262516851 stripped
 MonoBehaviour:

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using ZiplineValley.Controllers.Characters;
@@ -23,6 +24,8 @@ namespace ZiplineValley.Controllers
         private CharacterCounterView _homeCharacterCounter;
         [SerializeField]
         private UserInterfaceView _userInterface;
+        [SerializeField]
+        private GameObject _levelCompletedParticles;
 
         private PathBuilderController pathBuilderController => ControllersStorage.TryGetController<PathBuilderController>();
         private CharacterMovementController characterMovementController => ControllersStorage.TryGetController<CharacterMovementController>();
@@ -56,10 +59,19 @@ namespace ZiplineValley.Controllers
         {
             if (_levelModel.CharactersAtHome >= _levelModel.AliveCharacters)
             {
-                _userInterface.EndGamePopupView.Show(
-                    _levelModel.AliveCharacters >= _levelModel.MinCharactersCountToComplete,
-                    _levelModel.AliveCharacters, _levelModel.MinCharactersCountToComplete,
-                    _levelModel.InitialCharacterCount);
+                var success = _levelModel.AliveCharacters >= _levelModel.MinCharactersCountToComplete;
+                if (!success || _levelCompletedParticles == null)
+                {
+                    _userInterface.EndGamePopupView.Show(
+                        success,
+                        _levelModel.AliveCharacters, 
+                        _levelModel.MinCharactersCountToComplete,
+                        _levelModel.InitialCharacterCount);
+                }
+                else
+                {
+                    StartCoroutine(CoroutineShowCompletePopupAfterParticles());
+                }
             }
         }
 
@@ -70,6 +82,17 @@ namespace ZiplineValley.Controllers
                 _levelModel, 
                 _startCharacterCounter, 
                 _homeCharacterCounter);
+        }
+
+        private IEnumerator CoroutineShowCompletePopupAfterParticles()
+        {
+            _levelCompletedParticles.SetActive(true);
+            yield return new WaitForSeconds(2f);
+            _userInterface.EndGamePopupView.Show(
+                true,
+                _levelModel.AliveCharacters, 
+                _levelModel.MinCharactersCountToComplete,
+                _levelModel.InitialCharacterCount);
         }
     }
 }
